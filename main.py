@@ -1,19 +1,35 @@
-import openai
-from dotenv import find_dotenv, load_dotenv
+from openai import OpenAI
+from dotenv import load_dotenv
+import os
 
-# from openai import OpenAI
-# client = OpenAI()
+
 load_dotenv()
 
-# openai.api_key = os.enviton.ger("OPENAI_API_KEY")
+api_key = os.getenv("OPENAI_API_KEY")
 
-client = openai.OpenAI()
+client = OpenAI()
 model = "gpt-3.5-turbo-16k"
 
-#  Create our Assistant
-personal_trainer_assis = client.beta.assistants.create(
-    name="Personal Trainer",
-    instructions= """You are the best personal trainer and nutritionalist who knows how to get clients to build lean muscles. \n You've trained high-caliber athletes and movie starts.""",
-    model=model
+#  Create our Assistant #
+personal_trainer_assis = client.chat.completions.create(
+    model=model,
+    messages=[
+        {   "role": "system", 
+            "content": "You are a helpful assistant."
+        },
+        {
+            "role": "user",
+            "content": "How do I get started working out to lose fat and build muscles?"
+        }
+    ]
 )
-# print(personal_trainer_assis.id)
+print(personal_trainer_assis.choices[0].message)
+# asisitant_id = personal_trainer_assis.id
+# print(asisitant_id)
+
+# # Thread #
+# thread = client.beta.threads.create(
+    
+# )
+# thread_id = thread.id
+# print(thread_id)
